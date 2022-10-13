@@ -7,6 +7,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -36,5 +40,32 @@ public class PostServiceImpl implements PostService {
             throw new Exception("Could not save post " + e);
         }
         return post;
+    }
+
+    @Override
+    public List<Post> getPost() throws Exception {
+
+        List<Post> posts = new ArrayList<>();
+        try{
+            List<PostEntity> postEntities = postEntityRepository.findAll();
+
+            posts = postEntities.stream()
+                    .map(postEntity ->
+                            Post.builder()
+                                    .id(postEntity.getId())
+                                    .name(postEntity.getName())
+                                    .email(postEntity.getEmail())
+                                    .post(postEntity.getPost())
+                                    .image(postEntity.getImage())
+                                    .profilePic(postEntity.getProfilePic())
+                                    .timeStamp(postEntity.getTimeStamp()).build()
+                    ).collect(Collectors.toList());
+
+
+
+        }catch(Exception e){
+            throw new Exception("Could not fetch post "+e);
+        }
+        return posts;
     }
 }

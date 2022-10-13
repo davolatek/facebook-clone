@@ -6,6 +6,7 @@ import com.knowledgetekhub.facebookclone.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(value = "http://localhost:3000/")
@@ -22,7 +23,7 @@ public class PostController {
     }
 
     @PostMapping
-    public Post addPost(@RequestParam Map<String, String> requestParams){
+    public Post addPost(@RequestParam Map<String, String> requestParams) throws Exception {
          String strPost = requestParams.get("post");
          String name = requestParams.get("name");
          String email = requestParams.get("email");
@@ -42,4 +43,11 @@ public class PostController {
 
          return post;
     }
+
+
+    @GetMapping
+    public List<Post> getPost() throws Exception {
+          return postService.getPost();
+    }
+
 }

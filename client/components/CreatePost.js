@@ -11,7 +11,7 @@ import { addPost } from "../public/src/features/postSlice";
 
 const CreatePost = () => {
   const { data: session } = useSession();
-  const FACEBOOK_CLONE_ENDPOINT = ""
+  const FACEBOOK_CLONE_ENDPOINT = "http://localhost:8080/api/v1/post"
   const inputRef = useRef(null);
   const hiddenFileInput = useRef(null);
 
@@ -54,6 +54,7 @@ const CreatePost = () => {
       headers: {Accept: "application/json"}
     }).then((response)=>{
       inputRef.current.value = ""
+      console.log(response.data)
       dispatch(addPost(response.data))
       removeImage()
     }).catch((error)=>{
@@ -77,8 +78,9 @@ const CreatePost = () => {
             placeholder={`What's on Your Mind ${session?.user.name}`}
             ref={inputRef}
           ></input>
+          <button hidden onClick={handleSubmit}></button>
         </form>
-        <button hidden onClick={handleSubmit}></button>
+        
       </div>
       {imageToPost && (
         <div className="flex items-center space-x-4 px-4 py-2 hover:brightness-110 filter transition duration-150 cursor-pointer">
